@@ -4,6 +4,7 @@ from flask import Flask, render_template, redirect, url_for, request
 from left_recursion import left_recursion
 from left_factoring import left_factor
 from first_n_follow import get_first, get_follow, prepare_grammar
+from parse_table_generator import generate_parse_table
 
 app = Flask(__name__)
 
@@ -25,6 +26,8 @@ def index():
 
             get_follow(follow, c, terminals, non_terminals, first)
 
+            parse_table = generate_parse_table(first, follow, terminals, non_terminals, left_factored_grammar)
+
             return render_template("index.html",
                 left_recursion_free_grammar=left_recursion_free_grammar,
                 left_factored_grammar=left_factored_grammar,
@@ -32,7 +35,8 @@ def index():
                 first=first,
                 follow=follow,
                 terminals=terminals,
-                non_terminals=non_terminals)
+                non_terminals=non_terminals,
+                parse_table=parse_table)
         else:
             return redirect(url_for("index"))
     return render_template("index.html")

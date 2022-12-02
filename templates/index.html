@@ -69,7 +69,7 @@ C -> c | c C
       </tbody>
     </table>
   {% endif %}
-  {% if non_terminals and terminals %}
+  {% if parse_table %}
     <h2>Parse Table</h2>
     <table border="1">
       <thead>
@@ -89,10 +89,22 @@ C -> c | c C
           </th>
           {% for t in terminals %}
             {% if not t == "ε" %}
-              <td>...</td>
+              <td>
+                {% if parse_table[nt][t] %}
+                  {{ parse_table[nt][t] }}
+                {% else %}
+                  <span style="color: red">Error</span>
+                {% endif %}
+              </td>
             {% endif %}
           {% endfor %}
-          <td>...</td>
+          <td>
+            {% if parse_table[nt]["$"] %}
+              {{ parse_table[nt]["$"] }}
+            {% else %}
+              <span style="color: red">Error</span>
+            {% endif %}
+          </td>
         </tr>
         {% endfor %}
       </tbody>
