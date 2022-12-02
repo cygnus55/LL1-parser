@@ -1,21 +1,57 @@
-<html>
-  <head>
-    <title>LL(1) Parser</title>
-  </head>
-  <body>
-    <table border=1>
-      <thead>
-        <caption>Parse Table</caption>
-      </thead>
-      <tbody>
-        {% for row in table %}
-        <tr>
-          {% for data in row %}
-          <td>{{ data }}</td>
-          {% endfor %}
-        </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-  </body>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LL(1) Parser</title>
+</head>
+<body>
+  <h1>LL(1) Parser</h1>
+  <form action="/" method="POST">
+    <label for="grammar">Enter the grammar:</label><br />
+
+    <textarea id="grammar" name="grammar" rows="7" cols="25">
+S -> A B C
+A -> a b A | a b
+B -> b | B C
+C -> c | c C
+    </textarea><br />
+    <button>Submit</button>
+  </form>
+  {% if left_recursion_free_grammar %}
+    <h2>
+      After removing left recursion:
+    </h2>
+    <p>
+      {% for rule in left_recursion_free_grammar %}
+      <p>
+        {{ rule }}
+      </p>
+      {% endfor %}
+    </p>
+  {% endif %}
+  {% if left_factored_grammar %}
+    <h2>
+      After left factoring:
+    </h2>
+    <p>
+      {% for rule in left_factored_grammar %}
+      <p>
+        {{ rule }}
+      </p>
+      {% endfor %}
+    </p>
+  {% endif %}
+  <!--
+  <table>
+    <thead>
+      
+    </thead>
+    <tbody>
+
+    </tbody>
+  </table>
+-->
+</body>
 </html>
