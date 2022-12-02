@@ -1,6 +1,5 @@
 from flask import Flask, render_template, redirect, url_for, request
 
-# from parse_table_generator import table
 from left_recursion import left_recursion
 from left_factoring import left_factor
 from first_n_follow import get_first, get_follow, prepare_grammar
@@ -26,7 +25,7 @@ def index():
 
             get_follow(follow, c, terminals, non_terminals, first)
 
-            parse_table, ambiguous = generate_parse_table(first, follow, terminals, non_terminals, left_factored_grammar)
+            parse_table, ambiguous = generate_parse_table(first, follow, terminals, non_terminals, left_factored_grammar, c)
 
             return render_template("index.html",
                 left_recursion_free_grammar=left_recursion_free_grammar,

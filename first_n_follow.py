@@ -71,12 +71,22 @@ def get_follow(follow, c, terminal, non_terminal, first):
                         follow[j[i]].update(follow[element[0]])
 
 
+def get_first_exp(exp, first, c, terminal, non_terminal):
+        first_of_exp = set()
+        value = 0
+        while ('ε' in get_first(exp.split()[value], first, c, terminal, non_terminal) and len(exp.split()[value+1:]) > 0):
+            first_of_exp.update([*get_first(exp[value], first, c, terminal, non_terminal) - {'ε'}])
+            value = value + 1
+        first_of_exp.update([*get_first(exp.split()[value], first, c, terminal, non_terminal)])
+        return first_of_exp
+
+
 if __name__ == "__main__":
     grammar = [
-        "S -> A B C",
-        "B -> b B'",
+        "S -> A B",
+        "B -> b B' | ε",
         "B' -> C B' | ε",
-        "A -> a b A'",
+        "A -> a b A' | ε",
         "A' -> A | ε",
         "C -> c C'",
         "C' -> ε | C"
@@ -97,5 +107,4 @@ if __name__ == "__main__":
         x.add_row([each, first[each], follow[each]])
     print(x)
 
-    get_first("a C a", first, c, terminal, non_terminal)
-    print(first)
+    print(get_first_exp("ε", first, c, terminal, non_terminal))
