@@ -9,13 +9,14 @@
 <body>
   <h1>LL(1) Parser</h1>
   <form action="/" method="POST">
-    <label for="grammar">Enter the grammar:</label><br />
+    <label for="grammar">Enter the grammar (separate each literal by a space):</label><br />
 
-    <textarea id="grammar" name="grammar" rows="7" cols="25">
-S -> A B C
+    <textarea id="grammar" name="grammar" rows="7" cols="40">{% if grammar_body %}{{ grammar_body }}
+    {% else %}S -> A B C
 A -> a b A | a b
 B -> b | B C
 C -> c | c C
+      {% endif %}
     </textarea><br />
     <button>Submit</button>
   </form>
@@ -43,15 +44,59 @@ C -> c | c C
       {% endfor %}
     </p>
   {% endif %}
-  <!--
-  <table>
-    <thead>
-      
-    </thead>
-    <tbody>
-
-    </tbody>
-  </table>
--->
+  {% if first and follow %}
+    <h2>First and Follow Table</h2>
+    <table border="1">
+      <thead>
+        <th>Non-terminals</th>
+        <th>First</th>
+        <th>Follow</th>
+      </thead>
+      <tbody>
+        {% for nt in non_terminals %}
+        <tr>
+          <td>
+            {{ nt }}
+          </td>
+          <td>
+            {{ first[nt] | join(', ' | safe) }}
+          </td>
+          <td>
+            {{ follow[nt] | join(', ' | safe) }}
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% endif %}
+  {% if non_terminals and terminals %}
+    <h2>Parse Table</h2>
+    <table border="1">
+      <thead>
+        <th>Non-terminals/terminals</th>
+        {% for t in terminals %}
+          {% if not t == "ε" %}
+            <th>{{ t }}</th>
+          {% endif %}
+        {% endfor %}
+        <th>$</th>
+      </thead>
+      <tbody>
+        {% for nt in non_terminals %}
+        <tr>
+          <th>
+            {{ nt }}
+          </th>
+          {% for t in terminals %}
+            {% if not t == "ε" %}
+              <td>...</td>
+            {% endif %}
+          {% endfor %}
+          <td>...</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% endif %}
 </body>
 </html>
