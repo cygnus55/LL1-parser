@@ -4,6 +4,7 @@ from left_recursion import left_recursion
 from left_factoring import left_factor
 from first_n_follow import get_first, get_follow, prepare_grammar
 from parse_table_generator import generate_parse_table
+from parsing_program import parse_input
 
 app = Flask(__name__)
 
@@ -12,7 +13,8 @@ app = Flask(__name__)
 def index():
     if request.method == "POST":
         grammar = request.form.get("grammar")
-        if grammar.strip():
+        input_string = request.form.get("input_string")
+        if grammar.strip() and input_string:
             left_recursion_free_grammar = left_recursion(grammar)
             left_factored_grammar = left_factor(left_recursion_free_grammar[:])
             a, b, c, non_terminals, terminals = prepare_grammar(left_factored_grammar)
@@ -27,6 +29,8 @@ def index():
 
             parse_table, ambiguous = generate_parse_table(first, follow, terminals, non_terminals, left_factored_grammar, c)
 
+            parsing_results = parse_input(input_string, parse_table, non_terminals)
+
             return render_template("index.html",
                 left_recursion_free_grammar=left_recursion_free_grammar,
                 left_factored_grammar=left_factored_grammar,
@@ -36,7 +40,9 @@ def index():
                 terminals=terminals,
                 non_terminals=non_terminals,
                 parse_table=parse_table,
-                ambiguous=ambiguous)
+                ambiguous=ambiguous,
+                parsing_results=parsing_results,
+                input_string=input_string)
         else:
             return redirect(url_for("index"))
     with open("rules.txt", "r") as file:

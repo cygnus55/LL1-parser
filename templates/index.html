@@ -11,6 +11,8 @@
   <form action="/" method="POST">
     <label for="grammar">Enter the grammar (separate each literal by a space):</label><br />
     <textarea id="grammar" name="grammar" rows="7" cols="40">{{ grammar_body }}</textarea><br />
+    <label for="input_string">Input string:</label>
+    <input id="input_string" name="input_string" placeholder="Eg: abcaa" {% if input_string %}value={{ input_string }}{% endif %} /><br />
     <button>Submit</button>
   </form>
   {% if left_recursion_free_grammar %}
@@ -101,6 +103,25 @@
               <span style="color: red">Error</span>
             {% endif %}
           </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% endif %}
+  {% if parsing_results %}
+    <h2>Parsing (input: {{ input_string }})</h2>
+    <table border="1">
+      <thead>
+        <th>Stack</th>
+        <th>Input String</th>
+        <th>Moves</th>
+      </thead>
+      <tbody>
+        {% for row in parsing_results %}
+        <tr>
+          {% for x in row %}
+            <td>{{ x }}</td>
+          {% endfor %}
         </tr>
         {% endfor %}
       </tbody>
