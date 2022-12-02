@@ -10,14 +10,7 @@
   <h1>LL(1) Parser</h1>
   <form action="/" method="POST">
     <label for="grammar">Enter the grammar (separate each literal by a space):</label><br />
-
-    <textarea id="grammar" name="grammar" rows="7" cols="40">{% if grammar_body %}{{ grammar_body }}
-    {% else %}S -> A B C
-A -> a b A | a b
-B -> b | B C
-C -> c | c C
-      {% endif %}
-    </textarea><br />
+    <textarea id="grammar" name="grammar" rows="7" cols="40">{{ grammar_body }}</textarea><br />
     <button>Submit</button>
   </form>
   {% if left_recursion_free_grammar %}
@@ -71,6 +64,9 @@ C -> c | c C
   {% endif %}
   {% if parse_table %}
     <h2>Parse Table</h2>
+    {% if ambiguous %}
+      <p style="color: red;">The given grammar is not LL(1) grammar.</p>
+    {% endif %}
     <table border="1">
       <thead>
         <th>Non-terminals/terminals</th>

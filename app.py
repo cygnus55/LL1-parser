@@ -26,7 +26,7 @@ def index():
 
             get_follow(follow, c, terminals, non_terminals, first)
 
-            parse_table = generate_parse_table(first, follow, terminals, non_terminals, left_factored_grammar)
+            parse_table, ambiguous = generate_parse_table(first, follow, terminals, non_terminals, left_factored_grammar)
 
             return render_template("index.html",
                 left_recursion_free_grammar=left_recursion_free_grammar,
@@ -36,7 +36,10 @@ def index():
                 follow=follow,
                 terminals=terminals,
                 non_terminals=non_terminals,
-                parse_table=parse_table)
+                parse_table=parse_table,
+                ambiguous=ambiguous)
         else:
             return redirect(url_for("index"))
-    return render_template("index.html")
+    with open("rules.txt", "r") as file:
+        grammar_body = file.read()
+    return render_template("index.html", grammar_body=grammar_body)

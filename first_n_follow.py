@@ -96,3 +96,6 @@ if __name__ == "__main__":
     for each in non_terminal:
         x.add_row([each, first[each], follow[each]])
     print(x)
+
+    get_first("a C a", first, c, terminal, non_terminal)
+    print(first)
