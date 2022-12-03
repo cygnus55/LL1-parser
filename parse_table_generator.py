@@ -6,7 +6,8 @@ def generate_parse_table(first_set, follow_set,
     terminals = list(terminals)
     new_terminals = terminals[:]
     new_terminals.append("$")
-    new_terminals.remove("ε")
+    if "ε" in non_terminals:
+        new_terminals.remove("ε")
 
     ambiguous = False
 

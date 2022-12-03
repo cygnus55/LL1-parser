@@ -30,7 +30,9 @@ def parse_input(input_string, parse_table, non_terminals):
                     stack.append(literal.strip())
         steps.append(step)
     if stack[-1] == "$":
-        steps.append([" ".join(stack), input_string, "Accept"])
-
+        if input_string == "$":
+            steps.append([" ".join(stack), input_string, "Accept"])
+        else:
+            steps.append([" ".join(stack), input_string, "Reject"])
     return steps
 

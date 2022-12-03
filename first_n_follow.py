@@ -1,5 +1,4 @@
 import re
-from prettytable import PrettyTable
 
 
 def prepare_grammar(grammar):
@@ -82,6 +81,8 @@ def get_first_exp(exp, first, c, terminal, non_terminal):
 
 
 if __name__ == "__main__":
+    from prettytable import PrettyTable
+    
     grammar = [
         "S -> A B",
         "B -> b B' | ε",

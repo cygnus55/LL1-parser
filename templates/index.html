@@ -89,7 +89,7 @@
             {% if not t == "ε" %}
               <td>
                 {% if parse_table[nt][t] %}
-                  {{ parse_table[nt][t] }}
+                  {{ parse_table[nt][t] | join(' / ' | safe)}}
                 {% else %}
                   <span style="color: red">Error</span>
                 {% endif %}
@@ -98,7 +98,7 @@
           {% endfor %}
           <td>
             {% if parse_table[nt]["$"] %}
-              {{ parse_table[nt]["$"] }}
+              {{ parse_table[nt]["$"] | join(' / ' | safe) }}
             {% else %}
               <span style="color: red">Error</span>
             {% endif %}
