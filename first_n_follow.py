@@ -101,6 +101,8 @@ if __name__ == "__main__":
         get_first(each_non_terminal, first, c, terminal, non_terminal)
 
     get_follow(follow, c, terminal, non_terminal, first)
+    get_follow(follow, c, terminal, non_terminal, first)
+    
 
     x = PrettyTable()
     x.field_names = ['Non Terminals', 'First', 'Follow']

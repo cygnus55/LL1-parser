@@ -26,6 +26,7 @@ def index():
                 get_first(each_non_terminal, first, c, terminals, non_terminals)
 
             get_follow(follow, c, terminals, non_terminals, first)
+            get_follow(follow, c, terminals, non_terminals, first)
 
             parse_table, ambiguous = generate_parse_table(first, follow, terminals, non_terminals, left_factored_grammar, c)
 
