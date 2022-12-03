@@ -62,7 +62,7 @@ def get_follow(follow, c, terminal, non_terminal, first):
                                 follow[j[i]].update(first[j[value]] - {'ε'})
                                 value = value + 1
                             follow[j[i]].update(first[j[value]] - {'ε'})
-                            if len(j[value+1:]) <= 0:
+                            if len(j[value:]) <= 0:
                                 follow[j[i]].update(follow[element[0]])
                         else:
                             follow[j[i]].update({j[i+1]})
