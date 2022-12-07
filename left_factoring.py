@@ -17,6 +17,8 @@ def find_longest_prefix(first_term, second_term):
 
 
 def left_factor(rules):
+    final_left_factored_rules = []
+
     for rule in rules:
         A, right_side = rule.split("->")
         A = A.strip()
@@ -67,9 +69,9 @@ def left_factor(rules):
                 while any([x.startswith(B) for x in rules]) or \
                         any([x.startswith(B) for x in new_rules]):
                     B += "'"
-                right_side_rules.append(f"{prefix} {B}")
+                right_side_rules.append(f"{prefix}{B.strip()}")
                 new_rules.append(
-                    f"{B} -> {' | '.join([term for term in terms_with_prefix])}")
+                    f"{B} -> {' | '.join([term.strip() for term in terms_with_prefix])}")
 
             # Terms without common prefix
             gamma = []
@@ -78,14 +80,19 @@ def left_factor(rules):
                 if not any([term.startswith(p) for p in longest_prefices]):
                     gamma.append(term)
 
-            modified_rule = f"{A} -> {' | '.join(right_side_rules)}"
-            if len(gamma) > 0:
-                modified_rule += " | " + " | ".join(gamma)
+            modified_rule = f"{A} -> {' | '.join(right_side_rules+gamma)}"
             rules.append(modified_rule)
             rules.extend(new_rules)
-            rules.remove(rule)
+            final_left_factored_rules.append(modified_rule)
+            final_left_factored_rules.extend(new_rules)
+            if rule in final_left_factored_rules:
+                final_left_factored_rules.remove(rule)
+            # rules.remove(rule)
+        else:
+            if rule not in final_left_factored_rules:
+                final_left_factored_rules.append(rule)
 
-    return rules
+    return final_left_factored_rules
 
 
 if __name__ == "__main__":
