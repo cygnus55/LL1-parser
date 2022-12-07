@@ -13,6 +13,9 @@
     <textarea id="grammar" name="grammar" rows="7" cols="40">{{ grammar_body }}</textarea><br />
     <label for="input_string">Input string:</label>
     <input id="input_string" name="input_string" placeholder="Eg: abcaa" {% if input_string %}value={{ input_string }}{% endif %} /><br />
+    {% if not input_string and not start %}
+      <span style="color: red;">Input string not submitted! However steps upto parse tables are generated below!</span><br />
+    {% endif %}
     <button>Submit</button>
   </form>
   {% if left_recursion_free_grammar %}
