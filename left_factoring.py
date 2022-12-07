@@ -69,7 +69,7 @@ def left_factor(rules):
                 while any([x.startswith(B) for x in rules]) or \
                         any([x.startswith(B) for x in new_rules]):
                     B += "'"
-                right_side_rules.append(f"{prefix}{B.strip()}")
+                right_side_rules.append(f"{prefix.strip()} {B.strip()}")
                 new_rules.append(
                     f"{B} -> {' | '.join([term.strip() for term in terms_with_prefix])}")
 
