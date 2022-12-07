@@ -5,130 +5,168 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>LL(1) Parser</title>
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
 </head>
 <body>
-  <h1>LL(1) Parser</h1>
-  <form action="/" method="POST">
-    <label for="grammar">Enter the grammar (separate each literal by a space):</label><br />
-    <textarea id="grammar" name="grammar" rows="7" cols="40">{{ grammar_body }}</textarea><br />
-    <label for="input_string">Input string:</label>
-    <input id="input_string" name="input_string" placeholder="Eg: abcaa" {% if input_string %}value={{ input_string }}{% endif %} /><br />
-    {% if not input_string and not start %}
-      <span style="color: red;">Input string not submitted! However steps upto parse tables are generated below!</span><br />
-    {% endif %}
-    <button>Submit</button>
-  </form>
-  {% if left_recursion_free_grammar %}
-    <h2>
-      After removing left recursion:
-    </h2>
-    <p>
-      {% for rule in left_recursion_free_grammar %}
-      <p>
-        {{ rule }}
-      </p>
-      {% endfor %}
-    </p>
-  {% endif %}
-  {% if left_factored_grammar %}
-    <h2>
-      After left factoring:
-    </h2>
-    <p>
-      {% for rule in left_factored_grammar %}
-      <p>
-        {{ rule }}
-      </p>
-      {% endfor %}
-    </p>
-  {% endif %}
-  {% if first and follow %}
-    <h2>First and Follow Table</h2>
-    <table border="1">
-      <thead>
-        <th>Non-terminals</th>
-        <th>First</th>
-        <th>Follow</th>
-      </thead>
-      <tbody>
-        {% for nt in non_terminals %}
-        <tr>
-          <td>
-            {{ nt }}
-          </td>
-          <td>
-            {{ first[nt] | join(', ' | safe) }}
-          </td>
-          <td>
-            {{ follow[nt] | join(', ' | safe) }}
-          </td>
-        </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-  {% endif %}
-  {% if parse_table %}
-    <h2>Parse Table</h2>
-    {% if ambiguous %}
-      <p style="color: red;">The given grammar is not LL(1) grammar.</p>
-    {% endif %}
-    <table border="1">
-      <thead>
-        <th>Non-terminals/terminals</th>
-        {% for t in terminals %}
-          {% if not t == "ε" %}
-            <th>{{ t }}</th>
+  <section class="section">
+    <div class="container">
+      <h1 class="is-size-1">
+        LL(1) Parser
+      </h1>
+      <hr>
+      <div class="columns">
+        <div class="column is-two-fifths">
+          <form action="/" method="POST">
+            <div class="field">
+              <label class="label" for="grammar">Enter the grammar (separate each literal by a space):</label>
+              <div class="control">
+                <textarea class="textarea is-primary" id="grammar" name="grammar" rows="7" cols="5">{{ grammar_body }}</textarea>
+              </div>
+            </div>
+    
+            <div class="field">
+              <label class="label" for="input_string">Input String:</label>
+              <div class="control">
+                <input class="input {% if not input_string and not start %} is-danger {% else %} is-primary {% endif %}" id="input_string" name="input_string" placeholder="Eg: abcaa" {% if input_string %}value={{ input_string }}{% endif %}>
+              </div>
+              {% if not input_string and not start %}
+                <p class="help is-danger">Input string not submitted! However steps upto parse tables are generated below!</p>
+              {% endif %}
+            </div>
+    
+            <div class="field">
+              <div class="control">
+                <button class="button is-link">Submit</button>
+              </div>
+            </div>
+          </form>
+        
+          <hr>
+          {% if left_recursion_free_grammar %}
+          <div class="content">
+            <h2 class="is-size-3">After removing left recursion:</h2>
+              {% for rule in left_recursion_free_grammar %}
+                <p>
+                  {{ rule }}
+                </p>
+              {% endfor %}
+          </div>
           {% endif %}
-        {% endfor %}
-        <th>$</th>
-      </thead>
-      <tbody>
-        {% for nt in non_terminals %}
-        <tr>
-          <th>
-            {{ nt }}
-          </th>
-          {% for t in terminals %}
-            {% if not t == "ε" %}
-              <td>
-                {% if parse_table[nt][t] %}
-                  {{ parse_table[nt][t] | join(' / ' | safe)}}
-                {% else %}
-                  <span style="color: red">Error</span>
+          
+          {% if left_factored_grammar %}
+          <div class="content">
+            <h2 class="is-size-3">
+              After left factoring:
+            </h2>
+            {% for rule in left_factored_grammar %}
+              <p>
+                {{ rule }}
+              </p>
+            {% endfor %}
+          </div>
+          {% endif %}
+          {% if first and follow %}
+            <div class="content">
+              <h2 class="is-size-3">First and Follow Table</h2>
+            </div>
+            <table class="table is-striped is-narrow is-hoverable">
+              <thead>
+                <th>Non-terminals</th>
+                <th>First</th>
+                <th>Follow</th>
+              </thead>
+              <tbody>
+                {% for nt in non_terminals %}
+                <tr>
+                  <td>
+                    {{ nt }}
+                  </td>
+                  <td>
+                    {{ first[nt] | join(', ' | safe) }}
+                  </td>
+                  <td>
+                    {{ follow[nt] | join(', ' | safe) }}
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          {% endif %}
+        </div>
+      </div>
+
+      {% if parse_table %}
+        <div class="content">
+          <h2 class="is-size-3">Parse Table</h2>
+        </div>
+        
+        {% if ambiguous %}
+          <p style="color: red;">The given grammar is not LL(1) grammar.</p>
+        {% endif %}
+          <table class="table is-striped is-narrow is-hoverable">
+            <thead>
+              <th>Non-terminals/terminals</th>
+              {% for t in terminals %}
+                {% if not t == "ε" %}
+                  <th>{{ t }}</th>
                 {% endif %}
-              </td>
-            {% endif %}
-          {% endfor %}
-          <td>
-            {% if parse_table[nt]["$"] %}
-              {{ parse_table[nt]["$"] | join(' / ' | safe) }}
-            {% else %}
-              <span style="color: red">Error</span>
-            {% endif %}
-          </td>
-        </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-  {% endif %}
-  {% if parsing_results %}
-    <h2>Parsing (input: {{ input_string }})</h2>
-    <table border="1">
-      <thead>
-        <th>Stack</th>
-        <th>Input String</th>
-        <th>Moves</th>
-      </thead>
-      <tbody>
-        {% for row in parsing_results %}
-        <tr>
-          {% for x in row %}
-            <td>{{ x }}</td>
-          {% endfor %}
-        </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-  {% endif %}
+              {% endfor %}
+              <th>$</th>
+            </thead>
+            <tbody>
+              {% for nt in non_terminals %}
+              <tr>
+                <th>
+                  {{ nt }}
+                </th>
+                {% for t in terminals %}
+                  {% if not t == "ε" %}
+                    <td>
+                      {% if parse_table[nt][t] %}
+                        {{ parse_table[nt][t] | join(' / ' | safe)}}
+                      {% else %}
+                        <span style="color: red">Error</span>
+                      {% endif %}
+                    </td>
+                  {% endif %}
+                {% endfor %}
+                <td>
+                  {% if parse_table[nt]["$"] %}
+                    {{ parse_table[nt]["$"] | join(' / ' | safe) }}
+                  {% else %}
+                    <span style="color: red">Error</span>
+                  {% endif %}
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+      {% endif %}
+
+      {% if parsing_results %}
+      <div class="content">
+        <h2>Parsing (input: {{ input_string }})</h2>
+      </div>
+        
+        <table class="table is-striped is-narrow is-hoverable">
+          <thead>
+            <th>Stack</th>
+            <th>Input String</th>
+            <th>Moves</th>
+          </thead>
+          <tbody>
+            {% for row in parsing_results %}
+            <tr>
+              {% for x in row %}
+                <td>{{ x }}</td>
+              {% endfor %}
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      {% endif %}
+    </div>
+  </section>
 </body>
 </html>
