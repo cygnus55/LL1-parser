@@ -15,7 +15,7 @@ def parse_input(input_string, parse_table, non_terminals):
             step.append("Reject")
             steps.append(step)
             break
-        elif not parse_table[stack[-1]][a]:
+        elif a not in parse_table[stack[-1]] or not parse_table[stack[-1]][a]:
             print(stack[-1], a)
             step.append("Reject")
             steps.append(step)
@@ -35,4 +35,3 @@ def parse_input(input_string, parse_table, non_terminals):
         else:
             steps.append([" ".join(stack), input_string, "Reject"])
     return steps
-
