@@ -9,7 +9,7 @@ Clone the repo locally and follow the steps in the terminal to install the requi
 ### For Linux
 
 ```bash
-pip3 -m venv venv
+python3 -m venv venv
 source venv/bin/activate
 pip3 install -r requirements.txt
 ```
@@ -17,9 +17,9 @@ pip3 install -r requirements.txt
 ### For Windows
 
 ```bash
-pip3 -m venv venv
+python -m venv venv
 source venv\Scripts\activate.bat
-pip3 install -r requirements.txt
+pip install -r requirements.txt
 ```
 
 To run the parser, run the following:
